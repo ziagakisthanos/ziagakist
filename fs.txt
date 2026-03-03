@@ -1,0 +1,28 @@
+ziagakist/
+│
+├── public/                   ← Static files served as-is (no processing)
+│   └── models/
+│       └── old_computers.glb ←  3D model
+│
+├── src/                      ← source code lives here
+│   │
+│   ├── main.js               ← Entry point
+│   │
+│   ├── scene/                ← Everything Three.js related
+│   │   ├── SceneManager.js   ← Creates renderer, scene, camera
+│   │   ├── ModelLoader.js    ← Loads the GLB file
+│   │   └── CameraController.js ← Mouse parallax + click zoom effects
+│   │
+│   ├── interaction/          ← How the user talks to the 3D scene
+│   │   └── RaycastManager.js ← Detects which object clicked
+│   │
+│   ├── ui/                   ← DOM elements (HTML panels, overlays)
+│   │   └── Panel.js          ← Opens/closes the content panel
+│   │
+│   └── data/                 ← all the content. No 3D logic here
+│       └── content.js        ← text, projects, skills etc.
+│
+├── index.html                ← The single HTML page
+├── style.css                 ← Global styles
+├── package.json              ← Project config + dependencies
+└── vite.config.js            ← Vite configuration
