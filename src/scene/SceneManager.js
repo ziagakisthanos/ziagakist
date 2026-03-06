@@ -18,25 +18,23 @@ export class SceneManager {
             alpha: false
         })
 
-        // pixelRatio capped at 2 to avoid performance issues
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
         this.renderer.setSize(window.innerWidth, window.innerHeight)
-       
-        // color output encoding
         this.renderer.outputEncoding = THREE.sRGBEncoding
-
-        // tone mapping makes the scene more cinematic
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping
         this.renderer.toneMappingExposure = 1.0
 
-        //append canvas to container div
+        // ← Add these two lines
+        this.renderer.shadowMap.enabled = true
+        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
+
         this.container.appendChild(this.renderer.domElement)
     }
 
     createScene() {
         this.scene = new THREE.Scene()
 
-        this.scene.background = new THREE.Color(0x0a0a0a)
+        this.scene.background = new THREE.Color(0x000000)
 
 
         // Fog fades objects into the background color as they get further away
@@ -47,27 +45,53 @@ export class SceneManager {
 
     createCamera() {
         this.camera = new THREE.PerspectiveCamera(
-        90,                                         // field of view in degrees
+        60,                                         // field of view in degrees
         window.innerWidth / window.innerHeight,    // aspect ratio
         0.01,                                      // near clipping plane
         100                                        // far clipping plane
         )
 
-        this.camera.positiom.set(0.904507, -6.59579, 1.12211)
-        this.camera.rotation.set(97.5835, -1.92794, 5.39089)
+        this.camera.position.set(0.63,1.5,10)
     }
 
     createLights() {
-        const ambient = new THREE.AmbientLight(0xffffff, 0.3)
+        const ambient = new THREE.AmbientLight(0x000000, 0)
         this.scene.add(ambient)
 
-        //artificial sunlight
-        const key = new THREE.DirectionalLight(0xffffff, 0.8)
-        key.position.set(5,8,5)
-        this.scene.add(key)
+        const spotlight = new THREE.SpotLight(0XFFF1E0, 700)
+        spotlight.position.set(4, 6, -1.1)
+        spotlight.target.position.set(0,-0.1,0)
+        this.scene.add(spotlight.target)
+        this.scene.add(spotlight)
 
-        //second softer light to prevent pure black sides
-        const fill = new THREE.DirectionalLight(0x4466aa, 0.3)
+        spotlight.angle = Math.PI / 4.5
+        spotlight.penumbra = 0.9
+        spotlight.distance = 10
+        spotlight.decay = 2
+
+          // ── Shadows ────────────────────────────────────────────────
+        spotlight.castShadow = true
+
+        spotlight.shadow.bias = -0.001
+        spotlight.shadow.normalBias =  0.02
+
+        // // Temporary — remove once you're happy with the position
+        const helper = new THREE.SpotLightHelper(spotlight)
+        this.scene.add(helper)
+
+        // // Store reference so render() can update it every frame
+        this.spotlightHelper = helper
+
+        const pointLight2 = new THREE.PointLight(0x2d0a4e, 70, 200, 2)
+        pointLight2.position.set(0, 2, 1)
+        this.scene.add(pointLight2)
+
+        // Temporary helper — shows a wireframe sphere at the light position
+        const pointHelper2 = new THREE.PointLightHelper(pointLight2, 0.3)
+
+        // 0.3 is the size of the helper sphere — purely visual
+        this.scene.add(pointHelper2)
+
     }
 
     handleResize() {
@@ -80,6 +104,8 @@ export class SceneManager {
     }
 
     render() {
+        if (this.spotlightHelper) this.spotlightHelper.update()
+
         this.renderer.render(this.scene, this.camera)
     }
 }

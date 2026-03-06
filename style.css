@@ -18,3 +18,60 @@ html, body {
   width: 100%;
   height: 100%;
 }
+
+/* Panel slides in from the right */
+.panel {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%) translateX(0);
+  width: min(400px, 88vw);
+  max-height: 80vh;
+  overflow-y: auto;
+  background: rgba(10, 10, 10, 0.95);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 40px 32px;
+  color: white;
+  font-family: 'Courier New', monospace;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 100;
+}
+
+/* Hidden state — off screen to the right */
+.panel--hidden {
+  transform: translateY(-50%) translateX(110%);
+}
+
+#panel-close {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.5);
+  font-family: inherit;
+  font-size: 0.7rem;
+  padding: 6px 14px;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  margin-bottom: 28px;
+  transition: all 0.2s;
+}
+#panel-close:hover { color: white; border-color: white; }
+
+.panel-tag   { font-size: 0.6rem; letter-spacing: 0.2em; color: #888; margin-bottom: 8px; }
+.panel-title { font-size: 1.8rem; font-weight: 300; margin-bottom: 20px; line-height: 1.1; }
+.panel-body  { font-size: 0.8rem; line-height: 1.8; color: rgba(255,255,255,0.6); }
+
+.project-item  { border-top: 1px solid rgba(255,255,255,0.06); padding: 16px 0; }
+.project-name  { font-size: 0.9rem; margin-bottom: 6px; }
+.project-desc  { font-size: 0.72rem; color: rgba(255,255,255,0.5); margin-bottom: 10px; }
+.project-tags  { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.tag           { font-size: 0.58rem; padding: 3px 8px; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.5); }
+.project-link  { font-size: 0.65rem; color: #aaa; text-decoration: none; }
+.project-link:hover { color: white; }
+
+.skill-group    { margin-bottom: 16px; }
+.skill-category { font-size: 0.62rem; letter-spacing: 0.15em; color: #666; margin-bottom: 4px; }
+.skill-items    { font-size: 0.78rem; color: rgba(255,255,255,0.7); line-height: 1.6; }
+
+.panel-links    { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+.contact-link   { font-size: 0.8rem; color: rgba(255,255,255,0.6); text-decoration: none; }
+.contact-link:hover { color: white; }
