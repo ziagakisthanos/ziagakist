@@ -13,11 +13,11 @@ export class CameraController {
 
     // Store the position to return to when user exits zoom
     this.homePosition = camera.position.clone()
-    this.homeLookAt = new THREE.Vector3(0, 0, 0)
+    this.homeLookAt = new THREE.Vector3(-1, 2.5, 0)
 
     // Current look-at target
     this.currentLookAt = new THREE.Vector3(0, 0, 0)
-    this.targetLookAt = new THREE.Vector3(0, 0, 0)
+    this.targetLookAt = new THREE.Vector3(0, -10, 0)
 
     // Target position for zoom animation
     this.targetPosition = camera.position.clone()
@@ -35,21 +35,28 @@ export class CameraController {
     })
   }
 
-  zoomTo(targetMesh) {
+  zoomTo(targetMesh, sectionData) {
     this.isZoomed = true
 
     const targetPos = new THREE.Vector3()
     targetMesh.getWorldPosition(targetPos)
+      console.log(targetMesh.name, targetPos)
 
-    // Position camera in front of the mesh
-    // We move along the Z axis toward it — adjust the multiplier to taste
+
+
+    const cam = sectionData?.camera ?? {}
+    const off = cam.offset      ?? { x: 0, y: 0, z: 4 }
+    const look = cam.lookAtOffset ?? { x: 0, y: 0 }
+
     this.targetPosition.set(
-      targetPos.x,
-      targetPos.y,
-      targetPos.z + 2.0   // 2 units in front of the screen
+      targetPos.x + off.x,
+      targetPos.y + off.y,
+      targetPos.z + off.z
     )
 
     this.targetLookAt.copy(targetPos)
+    this.targetLookAt.x += look.x
+    this.targetLookAt.y += look.y
   }
 
   // Call this when user presses ESC or clicks the back button
@@ -73,14 +80,14 @@ export class CameraController {
         this.homePosition.z
       )
 
-      this.targetLookAt.set(parallaxX * 0.5, parallaxY * 0.5, 0)
+      this.targetLookAt.set(parallaxX * 0.5, parallaxY * 0.5, -222)
     }
 
     // Lerp = linear interpolation = smooth slide toward target
     // 0.05 = 5% of the distance each frame = smooth but responsive
     // Higher = snappier, lower = floatier
-    this.camera.position.lerp(this.targetPosition, 0.05)
-    this.currentLookAt.lerp(this.targetLookAt, 0.05)
+    this.camera.position.lerp(this.targetPosition, 0.015)
+    this.currentLookAt.lerp(this.targetLookAt, 0.06)
     this.camera.lookAt(this.currentLookAt)
   }
 }

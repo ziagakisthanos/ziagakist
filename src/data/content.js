@@ -1,13 +1,17 @@
 export const SECTIONS = {
-    Object_207: {
+    Cube009: {
         id: 'hero',
         label: 'WELCOME',
         tittle: 'Your Name',
         body: 'Full-stack developer & creative technologist. I build things that live at the intersection of code and design.',
         cta: null, // no buttons
+        camera: {
+                    offset: { x: 0, y: 1, z: 2.6},
+                    lookAtOffset: { x: 0, y: 0.6 } 
+                }
     },
 
-    Object_219: {
+    Cube014: {
         id: 'skills',
         label: 'SKILLS',
         title: 'My Toolkit',
@@ -16,10 +20,14 @@ export const SECTIONS = {
         { category: 'Backend',   items: ['Node.js', 'Java', 'Spring Boot', 'Python'] },
         { category: 'Database',  items: ['PostgreSQL', 'MongoDB', 'Redis'] },
         { category: 'Tools',     items: ['Git', 'Docker', 'AWS', 'Figma'] },
-        ]
+        ],
+        camera: { 
+                offset: { x: 0.6, y: 0.2, z: 2 },
+                lookAtOffset: { x: 0, y: 0.5 , z: 0} 
+                }
     },
 
-    Object_222: {
+    Cube037: {
         id: 'contact',
         label: 'CONTACT',
         title: "Let's Talk",
@@ -28,8 +36,55 @@ export const SECTIONS = {
         { label: 'Email',    href: 'mailto:you@example.com' },
         { label: 'GitHub',   href: 'https://github.com/you' },
         { label: 'LinkedIn', href: 'https://linkedin.com/in/you' },
-        ]
+        ],
+        camera: { 
+                offset: { x: 2, y: 0.2, z: 1 },
+                lookAtOffset: { x: 0, y: 0.5 , z: 0} 
+                }
+    },
+
+    Cube018: {
+        id: 'projects',
+        label: 'PROJECTS',
+        title: "project",
+        body: "interesting.",
+        links: [
+        { label: 'GraphQL',    href: 'https://graphql-dev.vercel.app' },
+        ],
+        camera: { 
+                offset: { x: 2, y: 0.2, z: 1 },
+                lookAtOffset: { x: 0, y: 0.6 , z: 0} 
+                }
+    },
+    
+    Cube023: {
+        id: '023',
+        label: 'label',
+        title: "023",
+        camera: { 
+                offset: { x: -0.4, y: 0.3, z: 2.5 },
+                lookAtOffset: { x: 0, y: 0.6 , z: 0} 
+                }
+    },
+
+    Cube027: {
+        id: '027',
+        label: 'label',
+        title: "027",
+        camera: { 
+                offset: { x: -1.4, y: 0.2, z: 1.4 },
+                lookAtOffset: { x: 0, y: 0.4 , z: 0} 
+                }
+    },
+
+    Cube116_1: {
+        id: '116',
+        title: "116",
+        camera: { 
+                offset: { x: -1.4, y: 0.2, z: 1.4 },
+                lookAtOffset: { x: 0, y: 0.4 , z: 0} 
+                }
     },
 }
 
-export const DECOR_NODES = ['Object_225', 'Object_228', 'Object_231']
+export const DECOR_NODES = ['Cube076', 'Cube115_1']

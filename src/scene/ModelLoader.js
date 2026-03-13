@@ -29,22 +29,11 @@ export class ModelLoader {
                         //enable shadows on every mesh
                         node.castShadow = true
                         node.receiveShadow = true
-
-                        // verify target nodes are found
-                        console.log('Found node:', node.name)
                     })
 
                     //after traversal, find target nodes by name
                     this.registerClickables(gltf.scene)
 
-                    const box = new THREE.Box3().setFromObject(gltf.scene)
-                    const center = box.getCenter(new THREE.Vector3())
-                    const size = box.getSize(new THREE.Vector3())
-
-                    console.log('Model center:', center)
-                    console.log('Model size:', size)
-                    console.log('Model min:', box.min)
-                    console.log('Model max:', box.max)
 
                     resolve(gltf)
                 },
@@ -76,7 +65,6 @@ export class ModelLoader {
                 node.userData.isClickable = true
                 node.userData.sectionKey = name
                 this.clickableNodes.push(node)
-                console.log('✓ Registered clickable:', name)
             } else {
                 console.warn('✗ Node not found:', name)
             }

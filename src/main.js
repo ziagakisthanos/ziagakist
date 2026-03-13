@@ -6,6 +6,7 @@ import { RaycastManager }   from './interaction/RaycastManager.js'
 import { Panel }            from './ui/Panel.js'
 import { SECTIONS }         from './data/content.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { VideoManager } from './scene/VideoManager.js'
 
 // ── Bootstrap ────────────────────────────────────────────────
 const container = document.getElementById('app')
@@ -19,9 +20,21 @@ const panel  = new Panel()
 const controls = new OrbitControls(sm.camera, sm.renderer.domElement)
 controls.enableDamping = true 
 
-// ── Load Model ───────────────────────────────────────────────
-loader.load('/models/old_computers.glb').then((gltf) => {
-  console.log('Model loaded!')
+// ── Load Models ───────────────────────────────────────────────
+
+const modelPromise = loader.load('/models/test_unwrapped.glb')
+
+const videos = new VideoManager()
+.add('/videos/late_night_with_the_devil.mp4', 'Cube116_1', [3.0, -3.4], [-1.0, 2.1])
+.add('/videos/tv_static.mp4',                 'Cube115_1', [3.0, -3.4], [-1.0, 2.1])
+.add('/videos/static4.mp4',                'Cube076_1', [3.0, -3.4], [-1.0, 2.1])
+
+
+
+Promise.all([modelPromise, videos.loadAll()]).then(([gltf, loadedVideos]) => {
+  document.getElementById('loader').style.display = 'none'
+  videos.applyAll(gltf, loadedVideos)
+
 
   // Find clickable nodes by name from your content map
   const sectionNames = Object.keys(SECTIONS)
@@ -42,7 +55,6 @@ loader.load('/models/old_computers.glb').then((gltf) => {
 
 // ── Wire Up Interactions ──────────────────────────────────────
 
-// When cursor enters a clickable mesh — optional: add highlight
 ray.onHoverEnter = (mesh) => {
   // You can change the mesh's emissive color here for a glow effect
   // We'll add this in a later step once you confirm the model loads
@@ -53,36 +65,26 @@ ray.onHoverLeave = (mesh) => {
   // Remove highlight
 }
 
-// When user clicks a TV
 ray.onClick = (mesh) => {
   const key = mesh.userData.sectionKey
   if (!key) return
 
-  cam.zoomTo(mesh)
+  cam.zoomTo(mesh, SECTIONS[key])
   panel.open(key)
 }
 
-// When user closes the panel
 panel.onClose = () => {
   panel.close()
   cam.zoomOut()
 }
 
-//debug controls
-window.addEventListener('keydown', (e) => {
-  if (e.key === 'd') {
-    const p = sm.camera.position
-    const t = cam.currentLookAt
-    console.log(`position: set(${p.x.toFixed(2)}, ${p.y.toFixed(2)}, ${p.z.toFixed(2)})`)
-    console.log(`lookAt:   set(${t.x.toFixed(2)}, ${t.y.toFixed(2)}, ${t.z.toFixed(2)})`)
-  }
-})
 // ── Animation Loop ────────────────────────────────────────────
 function animate() {
   requestAnimationFrame(animate)
-  // cam.update()
+
+  cam.update()
   ray.update()
-  controls.update()
+  // controls.update()
   sm.render()
 }
 

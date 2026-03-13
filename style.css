@@ -19,6 +19,18 @@ html, body {
   height: 100%;
 }
 
+#loader {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: monospace;
+  z-index: 999;
+}
+
 /* Panel slides in from the right */
 .panel {
   position: fixed;
