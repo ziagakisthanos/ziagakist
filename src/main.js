@@ -31,7 +31,7 @@ const zoomToSection = (mesh, sectionData) => {
   _overlayTimer = setTimeout(() => {
     overlay.setActive(mesh.userData.sectionKey)
     _overlayTimer = null
-  }, 100)
+  }, 200)
 }
 
 // ── Load Models ───────────────────────────────────────────────

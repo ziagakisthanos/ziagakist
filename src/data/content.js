@@ -2,9 +2,9 @@ export const SECTIONS = {
     Cube009: {
         id: 'hero',
         label: 'WELCOME',
-        tittle: 'Ziagakis Athanasios',
+        tittle: 'Hi, I\'m Thanos.',
         body: 'Full-stack developer & creative technologist. I build things that live at the intersection of code and design.',
-        roles: ['Full-stack Developer', 'Creative Technologist'],
+        roles: ['Full-stack Developer', 'Creative Technologist', ],
         cta: null,
         camera: {
                     offset: { x: 0, y: 1, z: 2.6},
@@ -34,9 +34,9 @@ export const SECTIONS = {
         title: "Let's Talk",
         body: "Open to freelance, full-time roles, and interesting collaborations.",
         links: [
-        { label: 'Email',    href: 'mailto:you@example.com' },
-        { label: 'GitHub',   href: 'https://github.com/you' },
-        { label: 'LinkedIn', href: 'https://linkedin.com/in/you' },
+        { label: 'Email',    href: 'mailto:ziagakisthanos@gmail.com' },
+        { label: 'GitHub',   href: 'https://github.com/ziagakisthanos' },
+        { label: 'LinkedIn', href: 'https://linkedin.com/in/ziagakisthanos' },
         ],
         camera: { 
                 offset: { x: 2, y: 0.2, z: 1 },
@@ -47,7 +47,7 @@ export const SECTIONS = {
     Cube018: {
         id: 'projects',
         label: 'PROJECTS',
-        title: "project",
+        title: "GraphQl-Dev",
         body: "interesting.",
         links: [
         { label: 'GraphQL',    href: 'https://graphql-dev.vercel.app' },
