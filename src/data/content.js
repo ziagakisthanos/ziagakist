@@ -2,9 +2,10 @@ export const SECTIONS = {
     Cube009: {
         id: 'hero',
         label: 'WELCOME',
-        tittle: 'Your Name',
+        tittle: 'Ziagakis Athanasios',
         body: 'Full-stack developer & creative technologist. I build things that live at the intersection of code and design.',
-        cta: null, // no buttons
+        roles: ['Full-stack Developer', 'Creative Technologist'],
+        cta: null,
         camera: {
                     offset: { x: 0, y: 1, z: 2.6},
                     lookAtOffset: { x: 0, y: 0.6 } 
@@ -79,7 +80,7 @@ export const SECTIONS = {
 
     Cube116_1: {
         id: '116',
-        title: "116",
+        // title: "LATE NIGHT WITH THE DEVIL",
         camera: { 
                 offset: { x: -1.4, y: 0.2, z: 1.4 },
                 lookAtOffset: { x: 0, y: 0.4 , z: 0} 

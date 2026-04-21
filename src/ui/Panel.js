@@ -18,12 +18,15 @@ export class Panel {
     // When close button is clicked, call callback
     this.onClose = null
     this.closeBtn.addEventListener('click', () => {
+      this.close()
       if (this.onClose) this.onClose()
     })
 
-    // Also close on Escape key
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.onClose) this.onClose()
+      if (e.key === 'Escape') {
+        this.close()
+        if (this.onClose) this.onClose()
+      }
     })
   }
 

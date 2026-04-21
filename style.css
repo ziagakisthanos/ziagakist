@@ -15,6 +15,7 @@ html, body {
 
 /* The app div holds the canvas — make it fill everything */
 #app {
+  position: relative;
   width: 100%;
   height: 100%;
 }
@@ -31,59 +32,265 @@ html, body {
   z-index: 999;
 }
 
-/* Panel slides in from the right */
+/* ── Bottom name tag ─────────────────────────────────────── */
+#bottom-tag {
+  position: fixed;
+  bottom: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 1;
+  transition: opacity 0.6s ease;
+}
+
+#bottom-tag.hidden {
+  opacity: 0;
+}
+
+.bottom-tag-name {
+  font-family: "Jersey 10", sans-serif;
+  font-size: 2.8rem;
+  font-weight: 400;
+  color: rgba(227, 214, 228, 0.92);
+  text-shadow: 2px 2px 0 rgb(59, 54, 54);
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+}
+
+.bottom-tag-roles {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bottom-tag-roles span {
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: rgb(70, 189, 90);
+  text-transform: uppercase;
+}
+
+/* ── Screen overlay panel ────────────────────────────────── */
 .panel {
   position: fixed;
   top: 50%;
-  right: 0;
-  transform: translateY(-50%) translateX(0);
-  width: min(400px, 88vw);
-  max-height: 80vh;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(460px, 80vw);
+  max-height: 72vh;
   overflow-y: auto;
-  background: rgba(10, 10, 10, 0.95);
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 40px 32px;
-  color: white;
-  font-family: 'Courier New', monospace;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 100;
+  background: rgba(4, 12, 4, 0.94);
+  border: 1px solid rgba(120, 220, 120, 0.12);
+  padding: 36px 40px 40px;
+  font-family: "Courier New", monospace;
+  color: rgba(255, 255, 255, 0.82);
+  z-index: 50;
+  transition: opacity 0.28s ease, transform 0.28s ease;
+  scrollbar-width: none;
 }
 
-/* Hidden state — off screen to the right */
+.panel::-webkit-scrollbar { display: none; }
+
 .panel--hidden {
-  transform: translateY(-50%) translateX(110%);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, calc(-50% + 10px));
 }
 
 #panel-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
   background: none;
-  border: 1px solid rgba(255,255,255,0.2);
-  color: rgba(255,255,255,0.5);
-  font-family: inherit;
+  border: none;
+  color: rgba(255, 255, 255, 0.28);
+  font-family: "Jersey 10", sans-serif;
   font-size: 0.7rem;
-  padding: 6px 14px;
+  letter-spacing: 0.14em;
   cursor: pointer;
-  letter-spacing: 0.1em;
-  margin-bottom: 28px;
-  transition: all 0.2s;
+  padding: 4px 8px;
+  transition: color 0.2s;
 }
-#panel-close:hover { color: white; border-color: white; }
+#panel-close:hover { color: rgba(255, 255, 255, 0.7); }
 
-.panel-tag   { font-size: 0.6rem; letter-spacing: 0.2em; color: #888; margin-bottom: 8px; }
-.panel-title { font-size: 1.8rem; font-weight: 300; margin-bottom: 20px; line-height: 1.1; }
-.panel-body  { font-size: 0.8rem; line-height: 1.8; color: rgba(255,255,255,0.6); }
+.panel-tag {
+  font-family: "Jersey 10", sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, 0.28);
+  margin-bottom: 18px;
+}
 
-.project-item  { border-top: 1px solid rgba(255,255,255,0.06); padding: 16px 0; }
-.project-name  { font-size: 0.9rem; margin-bottom: 6px; }
-.project-desc  { font-size: 0.72rem; color: rgba(255,255,255,0.5); margin-bottom: 10px; }
-.project-tags  { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
-.tag           { font-size: 0.58rem; padding: 3px 8px; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.5); }
-.project-link  { font-size: 0.65rem; color: #aaa; text-decoration: none; }
-.project-link:hover { color: white; }
+.panel-title {
+  font-family: "Jersey 10", sans-serif;
+  font-size: 2.4rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 18px;
+  line-height: 1.1;
+}
 
-.skill-group    { margin-bottom: 16px; }
-.skill-category { font-size: 0.62rem; letter-spacing: 0.15em; color: #666; margin-bottom: 4px; }
-.skill-items    { font-size: 0.78rem; color: rgba(255,255,255,0.7); line-height: 1.6; }
+.panel-body {
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.48);
+  margin-bottom: 28px;
+}
 
-.panel-links    { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
-.contact-link   { font-size: 0.8rem; color: rgba(255,255,255,0.6); text-decoration: none; }
-.contact-link:hover { color: white; }
+.panel-skills { display: flex; flex-direction: column; gap: 18px; }
+
+.skill-category {
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.24);
+  margin-bottom: 5px;
+}
+
+.skill-items { font-size: 0.86rem; color: rgba(255, 255, 255, 0.68); }
+
+.panel-links { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
+
+.contact-link {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: color 0.2s;
+  letter-spacing: 0.04em;
+}
+.contact-link:hover { color: rgba(160, 255, 160, 0.9); }
+
+.panel-projects { display: flex; flex-direction: column; gap: 22px; }
+
+.project-name { font-size: 1rem; color: rgba(255, 255, 255, 0.85); margin-bottom: 4px; }
+.project-desc { font-size: 0.78rem; color: rgba(255, 255, 255, 0.42); margin-bottom: 8px; line-height: 1.6; }
+.project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+
+.tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: rgba(160, 255, 160, 0.5);
+  border: 1px solid rgba(160, 255, 160, 0.2);
+  padding: 2px 8px;
+}
+
+.project-link { font-size: 0.82rem; color: rgba(255, 255, 255, 0.5); text-decoration: none; transition: color 0.2s; }
+.project-link:hover { color: rgba(160, 255, 160, 0.9); }
+
+/* ── CSS3D screen overlay ───────────────────────────────── */
+.screen-overlay {
+  width: 1300px;
+  height: 800px;
+  padding: 80px 100px;
+  background: transparent;
+  font-family: "Courier New", monospace;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.screen-overlay a { pointer-events: none; }
+
+.screen-overlay.active a {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.screen-tag {
+  font-size: 36px;
+  letter-spacing: 0.28em;
+  color: rgba(100, 220, 100, 0.45);
+  margin-bottom: 24px;
+  text-shadow: 0 0 12px rgba(80, 255, 80, 0.3);
+}
+
+.screen-title {
+  font-family: "Jersey 10", sans-serif;
+  font-size: 110px;
+  font-weight: 400;
+  color: rgba(180, 255, 180, 0.95);
+  margin-bottom: 36px;
+  line-height: 1.05;
+  text-shadow: 0 0 20px rgba(100, 255, 100, 0.5);
+}
+
+.screen-body {
+  font-size: 46px;
+  line-height: 1.65;
+  color: rgba(120, 220, 120, 0.65);
+  margin-bottom: 48px;
+  text-shadow: 0 0 8px rgba(80, 200, 80, 0.3);
+}
+
+.screen-skills { display: flex; flex-direction: column; gap: 28px; }
+
+.screen-skills .skill-category {
+  font-size: 30px;
+  letter-spacing: 0.2em;
+  color: rgba(100, 200, 100, 0.4);
+  margin-bottom: 6px;
+}
+
+.screen-skills .skill-items {
+  font-size: 42px;
+  color: rgba(140, 255, 140, 0.8);
+  text-shadow: 0 0 10px rgba(80, 220, 80, 0.35);
+}
+
+.screen-links { display: flex; flex-direction: column; gap: 28px; margin-top: 16px; }
+
+.screen-links .contact-link {
+  font-size: 58px;
+  color: rgba(120, 255, 120, 0.7);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  transition: color 0.2s, text-shadow 0.2s;
+  text-shadow: 0 0 12px rgba(80, 220, 80, 0.3);
+}
+
+.screen-links .contact-link:hover {
+  color: rgba(200, 255, 200, 1);
+  text-shadow: 0 0 24px rgba(100, 255, 100, 0.8);
+}
+
+.screen-projects { display: flex; flex-direction: column; gap: 36px; }
+
+.screen-projects .project-name {
+  font-size: 52px;
+  color: rgba(160, 255, 160, 0.9);
+  text-shadow: 0 0 12px rgba(80, 220, 80, 0.4);
+}
+
+.screen-projects .project-desc {
+  font-size: 36px;
+  color: rgba(100, 200, 100, 0.55);
+  line-height: 1.5;
+}
+
+.screen-projects .project-tags { display: flex; flex-wrap: wrap; gap: 12px; margin: 10px 0; }
+
+.screen-projects .tag {
+  font-size: 28px;
+  letter-spacing: 0.12em;
+  color: rgba(100, 220, 100, 0.55);
+  border: 1px solid rgba(100, 200, 100, 0.25);
+  padding: 4px 16px;
+}
+
+.screen-projects .project-link {
+  font-size: 38px;
+  color: rgba(120, 255, 120, 0.6);
+  text-decoration: none;
+  transition: color 0.2s, text-shadow 0.2s;
+  text-shadow: 0 0 10px rgba(80, 200, 80, 0.25);
+}
+
+.screen-projects .project-link:hover {
+  color: rgba(200, 255, 200, 1);
+  text-shadow: 0 0 20px rgba(100, 255, 100, 0.7);
+}

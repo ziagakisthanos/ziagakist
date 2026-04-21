@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer.js'
 
 export class SceneManager {
     constructor(container) {
@@ -24,23 +25,26 @@ export class SceneManager {
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping
         this.renderer.toneMappingExposure = 1.0
 
-        // ← Add these two lines
         this.renderer.shadowMap.enabled = true
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
         this.container.appendChild(this.renderer.domElement)
+
+        this.cssRenderer = new CSS3DRenderer()
+        this.cssRenderer.setSize(window.innerWidth, window.innerHeight)
+        this.cssRenderer.domElement.style.position = 'absolute'
+        this.cssRenderer.domElement.style.top = '0'
+        this.cssRenderer.domElement.style.left = '0'
+        this.cssRenderer.domElement.style.pointerEvents = 'none'
+        this.container.appendChild(this.cssRenderer.domElement)
     }
 
     createScene() {
         this.scene = new THREE.Scene()
-
         this.scene.background = new THREE.Color(0x000000)
-
-
-        // Fog fades objects into the background color as they get further away
-        // THREE.Fog(color, near, far) — objects start fading at 'near' and are
-        // fully invisible at 'far'
         this.scene.fog = new THREE.Fog(0x0a0a0a, 10, 30)
+
+        this.cssScene = new THREE.Scene()
     }
 
     createCamera() {
@@ -85,16 +89,16 @@ export class SceneManager {
     }
 
     handleResize() {
-        //update renderer and camera when window resizes
         window.addEventListener('resize', () => {
             this.camera.aspect = window.innerWidth / window.innerHeight
             this.camera.updateProjectionMatrix()
             this.renderer.setSize(window.innerWidth, window.innerHeight)
+            this.cssRenderer.setSize(window.innerWidth, window.innerHeight)
         })
     }
 
     render() {
-
         this.renderer.render(this.scene, this.camera)
+        this.cssRenderer.render(this.cssScene, this.camera)
     }
 }
