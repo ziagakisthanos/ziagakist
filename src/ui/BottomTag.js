@@ -2,8 +2,9 @@ export class BottomTag {
   constructor(heroData) {
     const el = document.createElement('div')
     el.id = 'bottom-tag'
+    el.classList.add('hidden')
 
-    const name = heroData.tittle ?? heroData.title ?? ''
+    const name = heroData.outterTitle ?? heroData.outterTitle ?? ''
     const roles = heroData.roles ?? []
 
     el.innerHTML = `

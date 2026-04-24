@@ -1,8 +1,10 @@
 export const SECTIONS = {
     Cube009: {
         id: 'hero',
+        preview: 'About Me',
         label: 'WELCOME',
-        tittle: 'Hi, I\'m Thanos.',
+        title: 'Hi, I\'m Thanos.',
+        outterTitle: 'Ziagakis Athanasios',
         body: 'Full-stack developer & creative technologist. I build things that live at the intersection of code and design.',
         roles: ['Full-stack Developer', 'Creative Technologist', ],
         cta: null,
@@ -14,13 +16,16 @@ export const SECTIONS = {
 
     Cube014: {
         id: 'skills',
+        preview: 'Skills',
         label: 'SKILLS',
         title: 'My Toolkit',
         skills: [
-        { category: 'Frontend',  items: ['JavaScript', 'TypeScript', 'React', 'Three.js'] },
-        { category: 'Backend',   items: ['Node.js', 'Java', 'Spring Boot', 'Python'] },
+        { category: 'Backend',   items: ['Node.js', 'Java', 'Spring Boot', 'GoLang'] },
+        { category: 'Frontend',  items: ['JavaScript', 'UX', 'Webpack', 'Vue', 'Three.js'] },
         { category: 'Database',  items: ['PostgreSQL', 'MongoDB', 'Redis'] },
-        { category: 'Tools',     items: ['Git', 'Docker', 'AWS', 'Figma'] },
+        { category: 'Tools',     items: ['Git', 'Docker', 'DevTools', 'Figma'] },
+        { category: '...and more',     items: []  },
+
         ],
         camera: { 
                 offset: { x: 0.6, y: 0.2, z: 2 },
@@ -30,6 +35,7 @@ export const SECTIONS = {
 
     Cube037: {
         id: 'contact',
+        preview: 'Contact',
         label: 'CONTACT',
         title: "Let's Talk",
         body: "Open to freelance, full-time roles, and interesting collaborations.",
@@ -46,6 +52,7 @@ export const SECTIONS = {
 
     Cube018: {
         id: 'projects',
+        preview: 'Projects',
         label: 'PROJECTS',
         title: "GraphQl-Dev",
         body: "interesting.",
@@ -81,6 +88,7 @@ export const SECTIONS = {
     Cube116_1: {
         id: '116',
         // title: "LATE NIGHT WITH THE DEVIL",
+        title: 'I am really passionate about what I do.',
         camera: { 
                 offset: { x: -1.4, y: 0.2, z: 1.4 },
                 lookAtOffset: { x: 0, y: 0.4 , z: 0} 

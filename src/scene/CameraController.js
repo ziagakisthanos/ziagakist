@@ -22,7 +22,49 @@ export class CameraController {
     // Target position for zoom animation
     this.targetPosition = camera.position.clone()
 
+    this._introPlaying = false
+
     this.listenToMouse()
+  }
+
+  beginIntro() {
+    this._introPlaying = true
+    this.camera.position.set(0, 6, 26)
+    this.currentLookAt.set(0, 2, 0)
+    this.camera.lookAt(this.currentLookAt)
+  }
+
+  playIntro(onComplete) {
+    const startPos  = this.camera.position.clone()
+    const endPos    = this.homePosition.clone()
+    const startLook = this.currentLookAt.clone()
+    // const idleLook  = new THREE.Vector3()
+    const endLook = this.homeLookAt.clone()
+    const duration  = 1500
+    const startTime = performance.now()
+
+    const tick = (now) => {
+      const raw  = Math.min((now - startTime) / duration, 1)
+      const ease = 1 - Math.pow(1 - raw, 3)
+
+      // Target the idle lookAt (z=-222) so hand-off to update() has no gap
+      endLook.set(this.mouse.x * 0.15, this.mouse.y * 0.075, -222)
+
+      this.camera.position.lerpVectors(startPos, endPos, ease)
+      this.currentLookAt.lerpVectors(startLook, endLook, ease)
+      this.camera.lookAt(this.currentLookAt)
+
+      if (raw < 1) {
+        requestAnimationFrame(tick)
+      } else {
+        this.targetPosition.copy(this.homePosition)
+        this.targetLookAt.copy(this.currentLookAt)
+        this._introPlaying = false
+        if (onComplete) onComplete()
+      }
+    }
+
+    requestAnimationFrame(tick)
   }
 
   listenToMouse() {
@@ -68,6 +110,7 @@ export class CameraController {
 
   // Called every frame from the animation loop
   update() {
+    if (this._introPlaying) return
     if (!this.isZoomed) {
       // Parallax effect — camera drifts slightly following the mouse
       // The strength (0.3) controls how much it moves — tune to taste

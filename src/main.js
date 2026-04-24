@@ -10,6 +10,8 @@ import { ScreenOverlay }      from './ui/ScreenOverlay.js'
 import { BottomTag }          from './ui/BottomTag.js'
 
 // ── Bootstrap ────────────────────────────────────────────────
+const startEl  = document.getElementById('start')
+const startBtn = document.getElementById('start-btn')
 const container = document.getElementById('app')
 
 const sm      = new SceneManager(container)
@@ -21,6 +23,7 @@ const overlay = new ScreenOverlay(sm.cssScene)
 new BottomTag(SECTIONS.Cube009)
 
 let _overlayTimer = null
+let _sceneReady   = false
 
 const bottomTag = document.getElementById('bottom-tag')
 
@@ -34,6 +37,8 @@ const zoomToSection = (mesh, sectionData) => {
   }, 200)
 }
 
+cam.beginIntro()
+
 // ── Load Models ───────────────────────────────────────────────
 const modelPromise = loader.load('/models/test_unwrapped.glb')
 
@@ -44,6 +49,7 @@ const videos = new VideoManager()
 
 Promise.all([modelPromise, videos.loadAll()]).then(([gltf, loadedVideos]) => {
   document.getElementById('loader').style.display = 'none'
+  startEl.style.display = 'flex'
 
   screens.applyAll(SECTIONS, gltf)
   videos.applyAll(gltf, loadedVideos)
@@ -72,10 +78,20 @@ Promise.all([modelPromise, videos.loadAll()]).then(([gltf, loadedVideos]) => {
 }).catch(console.error)
 
 // ── Wire Up Interactions ──────────────────────────────────────
+startBtn.addEventListener('click', (e) => {
+  e.stopPropagation()
+  startEl.classList.add('fade-out')
+  cam.playIntro(() => {
+    _sceneReady = true
+    bottomTag.classList.remove('hidden')
+  })
+})
+
 ray.onHoverEnter = (mesh) => {}
 ray.onHoverLeave = (mesh) => {}
 
 ray.onClick = (mesh) => {
+  if (!_sceneReady) return
   const key = mesh.userData.sectionKey
   if (!key) return
   zoomToSection(mesh, SECTIONS[key])

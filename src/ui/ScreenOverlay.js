@@ -24,13 +24,15 @@ export class ScreenOverlay {
 
   setActive(sectionKey) {
     if (this._activeKey && this._items[this._activeKey]) {
-      const { obj, div } = this._items[this._activeKey]
+      const { obj, div, previewObj } = this._items[this._activeKey]
       this.cssScene.remove(obj)
       div.classList.remove('active')
+      if (previewObj) this.cssScene.add(previewObj)
     }
     this._activeKey = sectionKey
     if (sectionKey && this._items[sectionKey]) {
-      const { obj, div } = this._items[sectionKey]
+      const { obj, div, previewObj } = this._items[sectionKey]
+      if (previewObj) this.cssScene.remove(previewObj)
       this.cssScene.add(obj)
       div.classList.add('active')
     }
@@ -41,35 +43,16 @@ export class ScreenOverlay {
   }
 
   _hasContent(data) {
-    return !!(data.body || data.links || data.skills || data.projects || data.label || data.title || data.tittle)
+    return !!(data.preview || data.body || data.links || data.skills || data.projects || data.label || data.title || data.tittle)
   }
 
   _create(mesh, sectionData) {
     const key = mesh.userData.sectionKey
     const targetMesh = mesh.userData.screenMesh ?? mesh
 
-    // ── Canvas texture on the mesh (always visible, depth-correct) ──
-    const canvas = this._renderToCanvas(sectionData)
-    const texture = new THREE.CanvasTexture(canvas)
-    targetMesh.material = new THREE.MeshStandardMaterial({
-      map: texture,
-      emissiveMap: texture,
-      emissive: new THREE.Color(0x0A0F0A),
-      emissiveIntensity: 1.0,
-    })
-
-    // ── CSS3D overlay (added to scene only when zoomed in) ──
-    const div = document.createElement('div')
-    div.className = 'screen-overlay'
-    div.innerHTML = this._buildHTML(sectionData)
-    div.addEventListener('click', (e) => e.stopPropagation())
-
-    const obj = new CSS3DSprite(div)
-
     const screenPos = new THREE.Vector3()
     targetMesh.getWorldPosition(screenPos)
-    obj.position.copy(screenPos)
-    obj.position.y += 0.6
+    screenPos.y += 0.6
 
     const box = new THREE.Box3().setFromObject(targetMesh)
     const size = box.getSize(new THREE.Vector3())
@@ -77,10 +60,32 @@ export class ScreenOverlay {
     const off = cam.offset ?? { x: 0, y: 0, z: 4 }
     const screenW = Math.abs(off.z) >= Math.abs(off.x) ? size.x : size.z
     const screenH = size.y
+
+    // ── CSS3D preview ──────────────────
+    let previewObj = null
+    if (sectionData.preview) {
+      const previewDiv = document.createElement('div')
+      previewDiv.className = 'screen-preview'
+      previewDiv.textContent = sectionData.preview
+
+      previewObj = new CSS3DSprite(previewDiv)
+      previewObj.position.copy(screenPos)
+      previewObj.scale.set(screenW / DIV_W, screenH / DIV_H, 1)
+      this.cssScene.add(previewObj)
+    }
+
+    // ── CSS3D full overlay ────────────
+    const div = document.createElement('div')
+    div.className = 'screen-overlay'
+    div.innerHTML = this._buildHTML(sectionData)
+    div.addEventListener('click', (e) => e.stopPropagation())
+
+    const obj = new CSS3DSprite(div)
+    obj.position.copy(screenPos)
     obj.scale.set(screenW / DIV_W, screenH / DIV_H, 1)
 
-    this._items[key] = { obj, div, mesh, sectionData }
-    // Not added to cssScene — only added in setActive()
+    this._items[key] = { obj, div, mesh, sectionData, previewObj }
+    // obj not added to cssScene — only added in setActive()
   }
 
   // ── Canvas renderer ─────────────────────────────────────────────
