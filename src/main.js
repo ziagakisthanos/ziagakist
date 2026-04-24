@@ -26,6 +26,15 @@ let _overlayTimer = null
 let _sceneReady   = false
 
 const bottomTag = document.getElementById('bottom-tag')
+const backBtn   = document.getElementById('back-btn')
+
+const zoomOut = () => {
+  if (_overlayTimer) { clearTimeout(_overlayTimer); _overlayTimer = null }
+  cam.zoomOut()
+  overlay.clearActive()
+  backBtn.classList.add('hidden')
+  bottomTag.classList.remove('hidden')
+}
 
 const zoomToSection = (mesh, sectionData) => {
   cam.zoomTo(mesh, sectionData)
@@ -33,6 +42,7 @@ const zoomToSection = (mesh, sectionData) => {
   if (_overlayTimer) clearTimeout(_overlayTimer)
   _overlayTimer = setTimeout(() => {
     overlay.setActive(mesh.userData.sectionKey)
+    backBtn.classList.remove('hidden')
     _overlayTimer = null
   }, 200)
 }
@@ -97,13 +107,10 @@ ray.onClick = (mesh) => {
   zoomToSection(mesh, SECTIONS[key])
 }
 
+backBtn.addEventListener('click', (e) => { e.stopPropagation(); zoomOut() })
+
 window.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    if (_overlayTimer) { clearTimeout(_overlayTimer); _overlayTimer = null }
-    cam.zoomOut()
-    overlay.clearActive()
-    bottomTag.classList.remove('hidden')
-  }
+  if (e.key === 'Escape') zoomOut()
 })
 
 // ── Animation Loop ────────────────────────────────────────────
