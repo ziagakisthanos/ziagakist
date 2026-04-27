@@ -57,8 +57,18 @@ const videos = new VideoManager()
   .add('/videos/tv_static.mp4',                 'Cube115_1', [3.0, -3.4], [-1.0, 2.1])
   .add('/videos/static4.mp4',                   'Cube076_1', [3.0, -3.4], [-1.0, 2.1])
 
-Promise.all([modelPromise, videos.loadAll()]).then(([gltf, loadedVideos]) => {
-  document.getElementById('loader').style.display = 'none'
+// ── Loader animation state ────────────────────────────────────
+const loaderEl   = document.getElementById('loader')
+const loaderText = loaderEl.querySelector('.loader-text')
+const loaderDots = [...loaderEl.querySelectorAll('.loader-dots span')]
+let   _loaderActive = true
+
+const minLoadTime = new Promise(resolve => setTimeout(resolve, 100))
+
+Promise.all([modelPromise, videos.loadAll(), minLoadTime]).then(([gltf, loadedVideos]) => {
+  _loaderActive = false
+  loaderEl.classList.add('fade-out')
+  loaderEl.addEventListener('transitionend', () => { loaderEl.style.display = 'none' }, { once: true })
   startEl.style.display = 'flex'
 
   screens.applyAll(SECTIONS, gltf)
@@ -114,8 +124,21 @@ window.addEventListener('keydown', (e) => {
 })
 
 // ── Animation Loop ────────────────────────────────────────────
-function animate() {
+function animate(t = 0) {
   requestAnimationFrame(animate)
+
+  if (_loaderActive) {
+    const s = t / 500
+    const pulse = 0.45 + 0.4 * (0.5 + 0.5 * Math.sin(s * 2.0))
+    loaderText.style.opacity = pulse
+    loaderText.style.textShadow = `0 0 ${8 + 12 * pulse}px rgba(80,255,80,${0.15 + 0.35 * pulse})`
+    loaderDots.forEach((dot, i) => {
+      const wave = 0.8 + 0.5 * Math.sin(s * 4.0 - i * 0.7)
+      dot.style.transform = `scale(${0.6 + 0.6 * wave})`
+      dot.style.opacity = 0.3 + 0.7 * wave
+    })
+  }
+
   cam.update()
   ray.update()
   sm.render()

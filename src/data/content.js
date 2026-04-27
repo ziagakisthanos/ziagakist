@@ -36,7 +36,10 @@ export const SECTIONS = {
     Cube037: {
         id: 'contact',
         preview: 'Contact',
-        label: 'CONTACT',
+        previewOffset: { x: 0.1 },
+        previewFontSize: '300px',
+
+        label: 'CONTACT1',
         title: "Let's Talk",
         body: "Open to freelance, full-time roles, and interesting collaborations.",
         links: [
@@ -51,13 +54,15 @@ export const SECTIONS = {
     },
 
     Cube018: {
-        id: 'projects',
-        preview: 'Projects',
-        label: 'PROJECTS',
-        title: "GraphQl-Dev",
-        body: "interesting.",
+        id: 'contact',
+        label: 'project',
+        preview: 'net-cat',
+        previewOffset: { x: 0.1 },
+        previewFontSize: '300px',
+        title: "Net-Cat",
+        body: "A simple TCP-based chat application written in Go, originally known as TCP-Chat.",
         links: [
-        { label: 'GraphQL',    href: 'https://graphql-dev.vercel.app' },
+        { label: 'Repository', href: 'https://github.com/ziagakisthanos/net-cat' },
         ],
         camera: { 
                 offset: { x: 2, y: 0.2, z: 1 },
@@ -66,9 +71,19 @@ export const SECTIONS = {
     },
     
     Cube023: {
-        id: '023',
-        label: 'label',
-        title: "023",
+        id: 'projects',
+        preview: 'Project#1',
+        previewFontSize: '290px',
+        // previewColor: 'rgba(0, 0, 0, 0.97)',
+        // previewTextShadow: '0 0 30px rgba(255, 100, 100, 0.5)',
+
+
+        label: 'PROJECTS',
+        title: "GraphQl-Dev",
+        body: "A pure static frontend dashboard for the Zone01 school platform. Visualises your personal learning data fetched live from the platform's GraphQL API.",
+        links: [
+        { label: 'GraphQL',    href: 'https://graphql-dev.vercel.app' },
+        ],
         camera: { 
                 offset: { x: -0.4, y: 0.3, z: 2.5 },
                 lookAtOffset: { x: 0, y: 0.6 , z: 0} 
@@ -76,9 +91,10 @@ export const SECTIONS = {
     },
 
     Cube027: {
-        id: '027',
-        label: 'label',
-        title: "027",
+        id: 'plain',
+        preview: 'plain',
+        previewColor: 'rgba(80, 150, 255, 0.9)',
+        
         camera: { 
                 offset: { x: -1.4, y: 0.2, z: 1.4 },
                 lookAtOffset: { x: 0, y: 0.4 , z: 0} 

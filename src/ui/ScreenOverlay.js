@@ -67,9 +67,17 @@ export class ScreenOverlay {
       const previewDiv = document.createElement('div')
       previewDiv.className = 'screen-preview'
       previewDiv.textContent = sectionData.preview
+      if (sectionData.previewFontSize) previewDiv.style.fontSize = sectionData.previewFontSize
+      if (sectionData.previewColor) previewDiv.style.color = sectionData.previewColor
+      if (sectionData.previewTextShadow) previewDiv.style.textShadow = sectionData.previewTextShadow
 
+      const pOff = sectionData.previewOffset ?? {}
       previewObj = new CSS3DSprite(previewDiv)
-      previewObj.position.copy(screenPos)
+      previewObj.position.set(
+        screenPos.x + (pOff.x ?? 0),
+        screenPos.y + (pOff.y ?? 0),
+        screenPos.z + (pOff.z ?? 0)
+      )
       previewObj.scale.set(screenW / DIV_W, screenH / DIV_H, 1)
       this.cssScene.add(previewObj)
     }
