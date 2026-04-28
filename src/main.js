@@ -63,7 +63,7 @@ const loaderText = loaderEl.querySelector('.loader-text')
 const loaderDots = [...loaderEl.querySelectorAll('.loader-dots span')]
 let   _loaderActive = true
 
-const minLoadTime = new Promise(resolve => setTimeout(resolve, 100))
+const minLoadTime = new Promise(resolve => setTimeout(resolve, 1000))
 
 Promise.all([modelPromise, videos.loadAll(), minLoadTime]).then(([gltf, loadedVideos]) => {
   _loaderActive = false

@@ -4,8 +4,8 @@ export const SECTIONS = {
         preview: 'About Me',
         label: 'WELCOME',
         title: 'Hi, I\'m Thanos.',
-        outterTitle: 'Ziagakis Athanasios',
         body: 'Full-stack developer & creative technologist. I build things that live at the intersection of code and design.',
+        outterTitle: 'Ziagakis Athanasios',
         roles: ['Full-stack Developer', 'Creative Technologist', ],
         cta: null,
         camera: {
@@ -55,14 +55,14 @@ export const SECTIONS = {
 
     Cube018: {
         id: 'contact',
-        label: 'project',
-        preview: 'net-cat',
+        label: '',
+        preview: 'CV',
         previewOffset: { x: 0.1 },
         previewFontSize: '300px',
-        title: "Net-Cat",
-        body: "A simple TCP-based chat application written in Go, originally known as TCP-Chat.",
+        title: "Take me with you",
+        body: "Get more insights into my work experience.",
         links: [
-        { label: 'Repository', href: 'https://github.com/ziagakisthanos/net-cat' },
+        { label: 'Download CV (.pdf)', href: '/ziagakisAthanasios.pdf', download: true },
         ],
         camera: { 
                 offset: { x: 2, y: 0.2, z: 1 },
@@ -72,28 +72,47 @@ export const SECTIONS = {
     
     Cube023: {
         id: 'projects',
-        preview: 'Project#1',
-        previewFontSize: '290px',
-        // previewColor: 'rgba(0, 0, 0, 0.97)',
-        // previewTextShadow: '0 0 30px rgba(255, 100, 100, 0.5)',
-
-
+        preview: 'Projects',
+        previewFontSize: '320px',
         label: 'PROJECTS',
-        title: "GraphQl-Dev",
-        body: "A pure static frontend dashboard for the Zone01 school platform. Visualises your personal learning data fetched live from the platform's GraphQL API.",
-        links: [
-        { label: 'GraphQL',    href: 'https://graphql-dev.vercel.app' },
+        carousel: [
+            {
+                title: "GraphQL-Dev",
+                body: "A pure static frontend dashboard for the Zone01 school platform. Visualises your personal learning data fetched live from the platform's GraphQL API.",
+                links: [{ label: 'Live Demo', href: 'https://graphql-dev.vercel.app' }],
+            },
+            {
+                title: "Net-Cat",
+                body: "A simple TCP-based chat application written in Go, originally known as TCP-Chat.",
+                links: [{ label: 'Repository', href: 'https://github.com/ziagakisthanos/net-cat' }],
+            },
         ],
-        camera: { 
+        camera: {
                 offset: { x: -0.4, y: 0.3, z: 2.5 },
-                lookAtOffset: { x: 0, y: 0.6 , z: 0} 
+                lookAtOffset: { x: 0, y: 0.6 , z: 0}
                 }
     },
 
     Cube027: {
-        id: 'plain',
-        preview: 'plain',
-        previewColor: 'rgba(80, 150, 255, 0.9)',
+        id: 'credits',
+        preview: 'Credits',
+
+
+        // previewColor: 'rgba(80, 150, 255, 0.9)',
+        label: 'Special Thanks',
+        previewFontSize: '280px',
+        previewOffset: { x: -0.1, y: -0.1 },
+        previewScale:  { x: 1, y: 1 },
+        overlayOffset: { x: 0.05, y: -0.06, z: 0 },
+        overlayWidth:  1600,
+        worldSize: { w: 1, h: 0.85 },
+        carousel: [
+            {
+                title: "Rafael Rodrigues",
+                body: "- 3D Model [old-computers]",
+                links: [{ label: 'License CC Atribution', href: 'https://creativecommons.org/licenses/by/4.0/' }],
+            },
+        ],
         
         camera: { 
                 offset: { x: -1.4, y: 0.2, z: 1.4 },

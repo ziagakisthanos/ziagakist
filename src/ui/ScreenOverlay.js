@@ -43,7 +43,7 @@ export class ScreenOverlay {
   }
 
   _hasContent(data) {
-    return !!(data.preview || data.body || data.links || data.skills || data.projects || data.label || data.title || data.tittle)
+    return !!(data.preview || data.body || data.links || data.skills || data.projects || data.carousel || data.label || data.title || data.tittle)
   }
 
   _create(mesh, sectionData) {
@@ -58,8 +58,11 @@ export class ScreenOverlay {
     const size = box.getSize(new THREE.Vector3())
     const cam = sectionData.camera ?? {}
     const off = cam.offset ?? { x: 0, y: 0, z: 4 }
-    const screenW = Math.abs(off.z) >= Math.abs(off.x) ? size.x : size.z
-    const screenH = size.y
+    const autoW = Math.abs(off.z) >= Math.abs(off.x) ? size.x : size.z
+    const autoH = size.y
+    const worldSize = sectionData.worldSize ?? {}
+    const screenW = worldSize.w ?? autoW
+    const screenH = worldSize.h ?? autoH
 
     // ── CSS3D preview ──────────────────
     let previewObj = null
@@ -78,7 +81,12 @@ export class ScreenOverlay {
         screenPos.y + (pOff.y ?? 0),
         screenPos.z + (pOff.z ?? 0)
       )
-      previewObj.scale.set(screenW / DIV_W, screenH / DIV_H, 1)
+      const pScale = sectionData.previewScale ?? {}
+      previewObj.scale.set(
+        (screenW / DIV_W) * (pScale.x ?? 1),
+        (screenH / DIV_H) * (pScale.y ?? 1),
+        1
+      )
       this.cssScene.add(previewObj)
     }
 
@@ -87,10 +95,26 @@ export class ScreenOverlay {
     div.className = 'screen-overlay'
     div.innerHTML = this._buildHTML(sectionData)
     div.addEventListener('click', (e) => e.stopPropagation())
+    if (sectionData.carousel) this._initCarousel(div)
 
+    const divW = sectionData.overlayWidth  ?? DIV_W
+    const divH = sectionData.overlayHeight ?? DIV_H
+
+    if (sectionData.overlayWidth)  div.style.width  = divW + 'px'
+    if (sectionData.overlayHeight) div.style.height = divH + 'px'
+
+    const oOff = sectionData.overlayOffset ?? {}
     const obj = new CSS3DSprite(div)
-    obj.position.copy(screenPos)
-    obj.scale.set(screenW / DIV_W, screenH / DIV_H, 1)
+    obj.position.set(
+      screenPos.x + (oOff.x ?? 0),
+      screenPos.y + (oOff.y ?? 0),
+      screenPos.z + (oOff.z ?? 0)
+    )
+    obj.scale.set(
+      screenW / divW,
+      screenH / divH,
+      1
+    )
 
     this._items[key] = { obj, div, mesh, sectionData, previewObj }
     // obj not added to cssScene — only added in setActive()
@@ -195,10 +219,10 @@ export class ScreenOverlay {
   // ── HTML builder for CSS3D overlay ──────────────────────────────
 
   _buildHTML(data) {
-    let html = `
-      <div class="screen-tag">${data.label ?? ''}</div>
-      <h2 class="screen-title">${data.title ?? data.tittle ?? ''}</h2>
-    `
+    const title = data.title ?? data.tittle
+    let html = `<div class="screen-tag">${data.label ?? ''}</div>`
+    if (title) html += `<h2 class="screen-title">${title}</h2>`
+
     if (data.body) html += `<p class="screen-body">${data.body}</p>`
 
     if (data.projects) {
@@ -230,11 +254,56 @@ export class ScreenOverlay {
     if (data.links) {
       html += '<div class="screen-links">'
       data.links.forEach(l => {
-        html += `<a href="${l.href}" target="_blank" class="contact-link">${l.label} →</a>`
+        const dl = l.download ? ' download' : ''
+        html += `<a href="${l.href}" target="_blank" class="contact-link"${dl}>${l.label} →</a>`
       })
       html += '</div>'
     }
 
+    if (data.carousel) {
+      html += '<div class="carousel-wrapper">'
+      data.carousel.forEach((project, i) => {
+        html += `<div class="carousel-slide${i === 0 ? ' carousel-slide--active' : ''}">`
+        html += `<h2 class="screen-title">${project.title}</h2>`
+        if (project.body) html += `<p class="screen-body">${project.body}</p>`
+        if (project.links) {
+          html += '<div class="screen-links">'
+          project.links.forEach(l => {
+            html += `<a href="${l.href}" target="_blank" class="contact-link">${l.label} →</a>`
+          })
+          html += '</div>'
+        }
+        html += '</div>'
+      })
+      html += `
+        <div class="carousel-nav">
+          <button class="carousel-prev">←</button>
+          <span class="carousel-counter">1 / ${data.carousel.length}</span>
+          <button class="carousel-next">→</button>
+        </div>
+      `
+      html += '</div>'
+    }
+
     return html
+  }
+
+  _initCarousel(div) {
+    const slides = [...div.querySelectorAll('.carousel-slide')]
+    const counter = div.querySelector('.carousel-counter')
+    const prev = div.querySelector('.carousel-prev')
+    const next = div.querySelector('.carousel-next')
+    let current = 0
+    const total = slides.length
+
+    const go = (idx) => {
+      slides[current].classList.remove('carousel-slide--active')
+      current = ((idx % total) + total) % total
+      slides[current].classList.add('carousel-slide--active')
+      counter.textContent = `${current + 1} / ${total}`
+    }
+
+    prev.addEventListener('click', (e) => { e.stopPropagation(); go(current - 1) })
+    next.addEventListener('click', (e) => { e.stopPropagation(); go(current + 1) })
   }
 }

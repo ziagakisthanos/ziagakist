@@ -82,8 +82,7 @@ export class CameraController {
 
     const targetPos = new THREE.Vector3()
     targetMesh.getWorldPosition(targetPos)
-      console.log(targetMesh.name, targetPos)
-
+   
 
 
     const cam = sectionData?.camera ?? {}

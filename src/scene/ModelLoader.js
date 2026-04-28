@@ -41,7 +41,6 @@ export class ModelLoader {
                 // called as file downloads
                 (progress) => {
                     const percent = Math.round((progress.loaded / progress.total) * 100)
-                    console.log(`Loading: ${percent}%`)
                 },
 
                 (error) => {
