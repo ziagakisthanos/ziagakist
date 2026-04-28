@@ -8,6 +8,7 @@ import { VideoManager }       from './scene/VideoManager.js'
 import { ScreenManager }      from './scene/ScreenManager.js'
 import { ScreenOverlay }      from './ui/ScreenOverlay.js'
 import { BottomTag }          from './ui/BottomTag.js'
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 // ── Bootstrap ────────────────────────────────────────────────
 const startEl  = document.getElementById('start')
