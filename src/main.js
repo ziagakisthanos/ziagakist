@@ -97,6 +97,9 @@ Promise.all([modelPromise, videos.loadAll(), minLoadTime]).then(([gltf, loadedVi
 
   ray.setClickables(clickableNodes)
   overlay.openAll(clickableNodes, SECTIONS)
+
+  // Force shader compilation now so it doesn't stutter during the intro animation
+  sm.renderer.compile(sm.scene, sm.camera)
 }).catch(console.error)
 
 // ── Wire Up Interactions ──────────────────────────────────────
@@ -126,8 +129,15 @@ window.addEventListener('keydown', (e) => {
 })
 
 // ── Animation Loop ────────────────────────────────────────────
+const FRAME_INTERVAL = 1000 / 60
+let _lastFrameTime = 0
+
 function animate(t = 0) {
   requestAnimationFrame(animate)
+
+  const delta = t - _lastFrameTime
+  if (delta < FRAME_INTERVAL) return
+  _lastFrameTime = t - (delta % FRAME_INTERVAL)
 
   if (_loaderActive) {
     const s = t / 500
@@ -141,7 +151,7 @@ function animate(t = 0) {
     })
   }
 
-  cam.update()
+  cam.update(delta)
   ray.update()
   sm.render()
 }

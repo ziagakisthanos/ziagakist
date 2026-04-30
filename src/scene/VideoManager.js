@@ -21,7 +21,7 @@ export class VideoManager {
           video.loop = true
           video.muted = true
           video.playsInline = true
-          video.preload = 'auto'
+          video.preload = 'metadata'
           video.addEventListener('canplaythrough', () => resolve({ video, config }), { once: true })
           video.load()
         })

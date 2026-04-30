@@ -62,7 +62,7 @@ export const SECTIONS = {
         title: "Take me with you",
         body: "Get more insights into my work experience.",
         links: [
-        { label: 'Download CV (.pdf)', href: '/ziagakisAthanasios.pdf', download: true },
+        { label: 'Download CV (.pdf)', href: '/ziagakisAthanasiosCV.pdf', download: true },
         ],
         camera: { 
                 offset: { x: 2, y: 0.2, z: 1 },
