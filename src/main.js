@@ -10,7 +10,9 @@ import { ScreenOverlay }      from './ui/ScreenOverlay.js'
 import { BottomTag }          from './ui/BottomTag.js'
 import { MobileNav }          from './ui/MobileNav.js'
 import { injectSpeedInsights } from "@vercel/speed-insights"
+import { inject as injectAnalytics } from "@vercel/analytics"
 injectSpeedInsights()
+injectAnalytics()
 
 // ── Bootstrap ────────────────────────────────────────────────
 const IS_MOBILE = window.innerWidth <= 768 || ('ontouchstart' in window && window.innerWidth <= 1024)
