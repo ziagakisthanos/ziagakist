@@ -29,18 +29,26 @@ export class CameraController {
   }
 
   beginIntro() {
-    this._introPlaying = true
     this.camera.position.set(0, 6, 26)
     this.currentLookAt.set(0, 2, 0)
     this.camera.lookAt(this.currentLookAt)
   }
 
   playIntro(onComplete) {
-    this._introStartPos  = this.camera.position.clone()
-    this._introStartLook = this.currentLookAt.clone()
-    this._introDuration  = 1500
-    this._introStartTime = performance.now()
+    this._introStartPos   = this.camera.position.clone()
+    this._introStartLook  = this.currentLookAt.clone()
+    this._introDuration   = 1500
+    this._introStartTime  = performance.now()
     this._introOnComplete = onComplete
+    this._introPlaying    = true
+  }
+
+  snapToHome() {
+    this.camera.position.copy(this.homePosition)
+    this.currentLookAt.copy(this.homeLookAt)
+    this.camera.lookAt(this.currentLookAt)
+    this.targetPosition.copy(this.homePosition)
+    this._introPlaying = false
   }
 
   _tickIntro(now) {

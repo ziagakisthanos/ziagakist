@@ -8,10 +8,13 @@ import { VideoManager }       from './scene/VideoManager.js'
 import { ScreenManager }      from './scene/ScreenManager.js'
 import { ScreenOverlay }      from './ui/ScreenOverlay.js'
 import { BottomTag }          from './ui/BottomTag.js'
+import { MobileNav }          from './ui/MobileNav.js'
 import { injectSpeedInsights } from "@vercel/speed-insights"
 injectSpeedInsights()
 
 // ── Bootstrap ────────────────────────────────────────────────
+const IS_MOBILE = window.innerWidth <= 768 || ('ontouchstart' in window && window.innerWidth <= 1024)
+
 const startEl  = document.getElementById('start')
 const startBtn = document.getElementById('start-btn')
 const container = document.getElementById('app')
@@ -23,6 +26,8 @@ const ray     = new RaycastManager(sm.camera, sm.renderer)
 const screens = new ScreenManager()
 const overlay = new ScreenOverlay(sm.cssScene)
 new BottomTag(SECTIONS.Cube009)
+
+const mobileNav = IS_MOBILE ? new MobileNav(SECTIONS) : null
 
 let _overlayTimer = null
 let _sceneReady   = false
@@ -106,10 +111,15 @@ Promise.all([modelPromise, videos.loadAll(), minLoadTime]).then(([gltf, loadedVi
 startBtn.addEventListener('click', (e) => {
   e.stopPropagation()
   startEl.classList.add('fade-out')
-  cam.playIntro(() => {
-    _sceneReady = true
-    bottomTag.classList.remove('hidden')
-  })
+  if (IS_MOBILE) {
+    cam.snapToHome()
+    mobileNav.show()
+  } else {
+    cam.playIntro(() => {
+      _sceneReady = true
+      bottomTag.classList.remove('hidden')
+    })
+  }
 })
 
 ray.onHoverEnter = (mesh) => {}

@@ -87,9 +87,9 @@ html, body {
   border: 1px solid rgba(140, 255, 140, 0.4);
   color: rgba(180, 255, 180, 0.85);
   font-family: "Jersey 10", sans-serif;
-  font-size: 3rem;
+  font-size: clamp(1.8rem, 6vw, 3rem);
   letter-spacing: 0.4em;
-  padding: 16px 56px;
+  padding: clamp(10px, 2vh, 16px) clamp(28px, 8vw, 56px);
   cursor: pointer;
   transition: border-color 0.3s, color 0.3s, box-shadow 0.3s;
 }
@@ -451,4 +451,255 @@ html, body {
   font-size: 40px;
   color: rgba(100, 200, 100, 0.45);
   letter-spacing: 0.12em;
+}
+
+/* ── Mobile Navigation ──────────────────────────────────── */
+#mobile-nav {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 12, 4, 0.88);
+  z-index: 50;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+#mobile-nav.hidden {
+  display: none;
+}
+
+#mobile-nav::-webkit-scrollbar { display: none; }
+
+.mobile-nav-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(28px, 6vh, 52px) clamp(20px, 6vw, 32px) clamp(28px, 5vh, 48px);
+  min-height: 100%;
+}
+
+.mobile-nav-header {
+  margin-bottom: clamp(20px, 4vh, 32px);
+}
+
+.mobile-nav-name {
+  font-family: "Jersey 10", sans-serif;
+  font-size: clamp(1.6rem, 5vw, 2.2rem);
+  color: rgba(227, 214, 228, 0.92);
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+.mobile-nav-roles {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mobile-nav-roles span {
+  font-family: "Courier New", monospace;
+  font-size: clamp(0.62rem, 1.8vw, 0.74rem);
+  letter-spacing: 0.18em;
+  color: rgb(70, 189, 90);
+  text-transform: uppercase;
+}
+
+.mobile-nav-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(140, 255, 140, 0.12);
+  margin-bottom: clamp(16px, 3vh, 28px);
+}
+
+.mobile-nav-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-nav-item {
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(140, 255, 140, 0.08);
+  color: rgba(180, 255, 180, 0.75);
+  font-family: "Jersey 10", sans-serif;
+  font-size: clamp(1.5rem, 4.5vw, 2rem);
+  letter-spacing: 0.1em;
+  padding: clamp(12px, 2.5vh, 18px) 0;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: color 0.2s, padding-left 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-nav-item:active,
+.mobile-nav-item:hover {
+  color: rgba(220, 255, 220, 1);
+  padding-left: 8px;
+}
+
+.mobile-nav-item-arrow {
+  opacity: 0.35;
+  font-size: 1.3rem;
+}
+
+/* ── Detail view ────────────────────────────────────────── */
+.mobile-nav-detail {
+  padding-top: clamp(28px, 6vh, 48px);
+}
+
+.mobile-back-btn {
+  background: none;
+  border: none;
+  color: rgba(140, 255, 140, 0.4);
+  font-family: "Jersey 10", sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.22em;
+  padding: 0 0 clamp(20px, 4vh, 36px);
+  cursor: pointer;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.2s;
+}
+
+.mobile-back-btn:hover,
+.mobile-back-btn:active {
+  color: rgba(180, 255, 180, 0.85);
+}
+
+.mobile-detail-content {
+  flex: 1;
+}
+
+.mobile-detail-tag {
+  font-family: "Courier New", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.28em;
+  color: rgba(100, 220, 100, 0.45);
+  margin-bottom: 14px;
+}
+
+.mobile-detail-title {
+  font-family: "Jersey 10", sans-serif;
+  font-size: clamp(2rem, 7vw, 2.8rem);
+  font-weight: 400;
+  color: rgba(180, 255, 180, 0.95);
+  margin-bottom: clamp(14px, 3vh, 20px);
+  line-height: 1.05;
+}
+
+.mobile-detail-body {
+  font-family: "Courier New", monospace;
+  font-size: clamp(0.82rem, 2.2vw, 0.88rem);
+  line-height: 1.75;
+  color: rgba(120, 220, 120, 0.7);
+  margin-bottom: clamp(20px, 4vh, 32px);
+}
+
+.mobile-detail-skills {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 3vh, 20px);
+}
+
+.mobile-detail-skill-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mobile-detail-skill-cat {
+  font-family: "Courier New", monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  color: rgba(100, 200, 100, 0.4);
+  text-transform: uppercase;
+}
+
+.mobile-detail-skill-items {
+  font-family: "Courier New", monospace;
+  font-size: clamp(0.82rem, 2.4vw, 0.9rem);
+  color: rgba(140, 255, 140, 0.8);
+  line-height: 1.5;
+}
+
+.mobile-detail-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 8px;
+}
+
+.mobile-detail-link {
+  font-family: "Courier New", monospace;
+  font-size: clamp(0.86rem, 2.4vw, 0.95rem);
+  color: rgba(120, 255, 120, 0.7);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  padding: clamp(10px, 2vh, 14px) 0;
+  border-bottom: 1px solid rgba(140, 255, 140, 0.08);
+  display: block;
+  transition: color 0.2s, padding-left 0.15s;
+}
+
+.mobile-detail-link:hover,
+.mobile-detail-link:active {
+  color: rgba(200, 255, 200, 1);
+  padding-left: 6px;
+}
+
+.mobile-detail-slides {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.mobile-detail-slide {
+  padding: clamp(16px, 3vh, 24px) 0;
+  border-bottom: 1px solid rgba(140, 255, 140, 0.08);
+}
+
+.mobile-detail-slide:last-child {
+  border-bottom: none;
+}
+
+.mobile-detail-slide-title {
+  font-family: "Jersey 10", sans-serif;
+  font-size: clamp(1.3rem, 4vw, 1.6rem);
+  color: rgba(160, 255, 160, 0.9);
+  margin-bottom: 10px;
+  letter-spacing: 0.06em;
+}
+
+.mobile-detail-slide-body {
+  font-family: "Courier New", monospace;
+  font-size: clamp(0.78rem, 2.1vw, 0.82rem);
+  color: rgba(100, 200, 100, 0.65);
+  line-height: 1.65;
+  margin-bottom: 16px;
+}
+
+/* ── Landscape phones ───────────────────────────────────── */
+@media (max-height: 500px) and (orientation: landscape) {
+  .mobile-nav-inner {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  .mobile-nav-header {
+    margin-bottom: 12px;
+  }
+  .mobile-nav-divider {
+    margin-bottom: 10px;
+  }
+  .mobile-nav-item {
+    padding-top: 9px;
+    padding-bottom: 9px;
+  }
+  .mobile-back-btn {
+    padding-bottom: 16px;
+  }
 }
