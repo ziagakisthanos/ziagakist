@@ -25,6 +25,8 @@ export class CameraController {
     this._introPlaying = false
     this.isZoomingOut = false
 
+    this._introEndLook = new THREE.Vector3()
+
     this.listenToMouse()
   }
 
@@ -56,7 +58,7 @@ export class CameraController {
     const ease = 1 - Math.pow(1 - raw, 3)
 
     const endPos  = this.homePosition
-    const endLook = new THREE.Vector3(this.mouse.x * 0.15, this.mouse.y * 0.075, -222)
+    const endLook = this._introEndLook.set(this.mouse.x * 0.15, this.mouse.y * 0.075, -222)
 
     this.camera.position.lerpVectors(this._introStartPos, endPos, ease)
     this.currentLookAt.lerpVectors(this._introStartLook, endLook, ease)

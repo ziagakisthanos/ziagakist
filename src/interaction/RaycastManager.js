@@ -7,16 +7,15 @@ export class RaycastManager {
 
     this.raycaster = new THREE.Raycaster()
 
-    // Current normalized mouse position
-    this.mouse = new THREE.Vector2(-10, -10) // start offscreen
+    this.mouse = new THREE.Vector2(-10, -10)
+    this._mouseDirty = false
+    this._hits = []
 
     this.hoveredMesh = null
 
-    // Callback functions — set these from outside
-    // This pattern (callbacks instead of hardcoded actions) keeps this class reusable
-    this.onHoverEnter = null  // called when cursor enters a clickable mesh
-    this.onHoverLeave = null  // called when cursor leaves a clickable mesh
-    this.onClick      = null  // called when user clicks a clickable mesh
+    this.onHoverEnter = null
+    this.onHoverLeave = null
+    this.onClick      = null
 
     this._listen()
   }
@@ -25,6 +24,7 @@ export class RaycastManager {
     window.addEventListener('mousemove', (e) => {
       this.mouse.x =  (e.clientX / window.innerWidth)  * 2 - 1
       this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1
+      this._mouseDirty = true
     })
 
     window.addEventListener('click', () => {
@@ -37,20 +37,24 @@ export class RaycastManager {
 
   setClickables(meshes) {
     this.clickables = meshes
+    // Pre-flatten to actual mesh objects so intersectObjects doesn't recurse every frame
+    this._flatMeshes = []
+    meshes.forEach(node => {
+      node.traverse(child => { if (child.isMesh) this._flatMeshes.push(child) })
+    })
   }
 
-  // Called every frame
   update() {
-    if (!this.clickables || this.clickables.length === 0) return
+    if (!this._flatMeshes || this._flatMeshes.length === 0) return
+    if (!this._mouseDirty) return
+    this._mouseDirty = false
 
     this.raycaster.setFromCamera(this.mouse, this.camera)
 
-    // Test intersections — returns array sorted by distance (closest first)
-    const hits = this.raycaster.intersectObjects(this.clickables, true)
-    // The 'true' argument means check children recursively
-    // Important for GLB models where a click target may have child meshes
+    this._hits.length = 0
+    this.raycaster.intersectObjects(this._flatMeshes, false, this._hits)
 
-    const hit = hits.length > 0 ? hits[0].object : null
+    const hit = this._hits.length > 0 ? this._hits[0].object : null
 
     // Hover enter — cursor moved onto a new mesh
     if (hit && hit !== this.hoveredMesh) {
