@@ -4,9 +4,9 @@ export const SECTIONS = {
         preview: 'About Me',
         label: 'WELCOME',
         title: 'Hi, I\'m Thanos.',
-        body: 'Full-stack developer & creative technologist. I build things that live at the intersection of code and design.',
+        body: 'Full-stack developer & tech enthusiast. I live in Athens, Greece and I am actively looking for job opportunities.',
         outterTitle: 'Ziagakis Athanasios',
-        roles: ['Full-stack Developer', 'Creative Technologist', ],
+        roles: ['Full-stack Developer', ],
         cta: null,
         camera: {
                     offset: { x: 0, y: 1, z: 2.6},
