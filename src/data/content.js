@@ -60,9 +60,9 @@ export const SECTIONS = {
         previewOffset: { x: 0.1 },
         previewFontSize: '300px',
         title: "Take me with you",
-        body: "Get more insights into my work experience.",
+        body: "Get more insights into my work and experience.",
         links: [
-        { label: 'Download CV (.pdf)', href: '/ziagakisAthanasiosCV.pdf', download: true },
+        { label: 'Download CV (.pdf)', href: '/Ziagakis_Athanasios_Resume.pdf', download: true },
         ],
         camera: { 
                 offset: { x: 2, y: 0.2, z: 1 },
@@ -96,9 +96,6 @@ export const SECTIONS = {
     Cube027: {
         id: 'credits',
         preview: 'Credits',
-
-
-        // previewColor: 'rgba(80, 150, 255, 0.9)',
         label: 'Special Thanks',
         previewFontSize: '280px',
         previewOffset: { x: -0.1, y: -0.1 },
@@ -123,7 +120,7 @@ export const SECTIONS = {
     Cube116_1: {
         id: '116',
         // title: "LATE NIGHT WITH THE DEVIL",
-        title: 'I am really passionate about what I do.',
+        // title: 'I am really passionate about what I do.',
         camera: { 
                 offset: { x: -1.4, y: 0.2, z: 1.4 },
                 lookAtOffset: { x: 0, y: 0.4 , z: 0} 
