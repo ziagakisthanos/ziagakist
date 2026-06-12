@@ -20,6 +20,12 @@ html, body {
   height: 100%;
 }
 
+body.zoomed #app,
+body.zoomed canvas {
+  pointer-events: none;
+  cursor: default;
+}
+
 #loader {
   position: fixed;
   inset: 0;

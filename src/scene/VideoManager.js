@@ -12,45 +12,37 @@ export class VideoManager {
     return this // allows chaining
   }
 
-  loadAll() {
-    return Promise.all(
-      this.configs.map(config =>
-        new Promise((resolve) => {
-          const video = document.createElement('video')
-          video.src = config.src
-          video.loop = true
-          video.muted = true
-          video.playsInline = true
-          video.preload = 'metadata'
-          video.addEventListener('canplaythrough', () => resolve({ video, config }), { once: true })
-          video.load()
+  loadAndApplyAll(gltf) {
+    this.configs.forEach(config => {
+      const video = document.createElement('video')
+      video.src = config.src
+      video.loop = true
+      video.muted = true
+      video.playsInline = true
+      video.preload = 'auto'
+      video.addEventListener('canplaythrough', () => {
+        const texture = new THREE.VideoTexture(video)
+        texture.colorSpace = THREE.SRGBColorSpace
+        texture.minFilter = THREE.LinearFilter
+        texture.magFilter = THREE.LinearFilter
+        texture.generateMipmaps = false
+        texture.repeat.set(...config.repeat)
+        texture.offset.set(...config.offset)
+
+        gltf.scene.traverse((node) => {
+          if (node.name === config.meshName) {
+            node.material = new THREE.MeshStandardMaterial({
+              map: texture,
+              emissiveMap: texture,
+              emissive: new THREE.Color(0xffffff),
+              emissiveIntensity: 1.3
+            })
+          }
         })
-      )
-    )
-  }
 
-  applyAll(gltf, loadedVideos) {
-    loadedVideos.forEach(({ video, config }) => {
-      const texture = new THREE.VideoTexture(video)
-      texture.colorSpace = THREE.SRGBColorSpace
-      texture.minFilter = THREE.LinearFilter
-      texture.magFilter = THREE.LinearFilter
-      texture.generateMipmaps = false
-      texture.repeat.set(...config.repeat)
-      texture.offset.set(...config.offset)
-
-      gltf.scene.traverse((node) => {
-        if (node.name === config.meshName) {
-          node.material = new THREE.MeshStandardMaterial({
-            map: texture,
-            emissiveMap: texture,
-            emissive: new THREE.Color(0xffffff),
-            emissiveIntensity: 1.3
-          })
-        }
-      })
-
-      video.play()
+        video.play()
+      }, { once: true })
+      video.load()
     })
   }
 }
