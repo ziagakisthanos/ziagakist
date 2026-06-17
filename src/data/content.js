@@ -5,7 +5,7 @@ export const SECTIONS = {
         label: 'WELCOME',
         title: 'Hi, I\'m Thanos.',
         body: 'Full-stack developer & tech enthusiast. I live in Athens, Greece and I am actively looking for job opportunities.',
-        outterTitle: 'Ziagakis Athanasios',
+        outterTitle: 'Ziagakis Thanos',
         roles: ['Full-stack Developer', ],
         cta: null,
         camera: {

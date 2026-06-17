@@ -39,10 +39,9 @@ export class MobileNav {
 
     this._menuPanel.innerHTML = `
       <div class="mobile-nav-header">
-        <div class="mobile-nav-name">Ziagakis Athanasios</div>
+        <div class="mobile-nav-name">Ziagakis Thanos</div>
         <div class="mobile-nav-roles">
           <span>Full-stack Developer</span>
-          <span>Creative Technologist</span>
         </div>
       </div>
       <div class="mobile-nav-divider"></div>
