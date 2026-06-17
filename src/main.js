@@ -43,11 +43,13 @@ const zoomOut = () => {
   overlay.clearActive()
   backBtn.classList.add('hidden')
   bottomTag.classList.remove('hidden')
+  document.body.classList.remove('zoomed')
 }
 
 const zoomToSection = (mesh, sectionData) => {
   cam.zoomTo(mesh, sectionData)
   bottomTag.classList.add('hidden')
+  document.body.classList.add('zoomed')
   if (_overlayTimer) clearTimeout(_overlayTimer)
   _overlayTimer = setTimeout(() => {
     overlay.setActive(mesh.userData.sectionKey)
@@ -72,16 +74,14 @@ const loaderText = loaderEl.querySelector('.loader-text')
 const loaderDots = [...loaderEl.querySelectorAll('.loader-dots span')]
 let   _loaderActive = true
 
-const minLoadTime = new Promise(resolve => setTimeout(resolve, 1000))
-
-Promise.all([modelPromise, videos.loadAll(), minLoadTime]).then(([gltf, loadedVideos]) => {
+modelPromise.then((gltf) => {
   _loaderActive = false
   loaderEl.classList.add('fade-out')
   loaderEl.addEventListener('transitionend', () => { loaderEl.style.display = 'none' }, { once: true })
   startEl.style.display = 'flex'
 
   screens.applyAll(SECTIONS, gltf)
-  videos.applyAll(gltf, loadedVideos)
+  videos.loadAndApplyAll(gltf)
 
   const sectionNames = Object.keys(SECTIONS)
   const clickableNodes = []
